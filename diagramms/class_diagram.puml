@@ -1,0 +1,60 @@
+@startuml
+left to right direction
+skinparam backgroundColor #f8fafc
+skinparam shadowing false
+skinparam roundCorner 8
+
+' Настройки классов
+skinparam classBorderColor #1b6437ff
+skinparam classBackgroundColor #ffffff
+skinparam classFontColor #0f172a
+
+' 2. Скрываем блок методов (убирает нижнюю полоску)
+hide methods 
+
+class User {
+  +id: int
+  +username: string
+  +email: string
+  +password: string
+  +is_staff: boolean
+  +is_active: boolean
+  +date_joined: datetime
+}
+
+class LLM {
+  +id: int
+  +name: string
+  +openai_link: string
+  +api_token: string
+}
+
+class LLMResult {
+  +id: int
+  +result: float
+  +difficulty: int
+  +created_at: datetime
+  +llm_id: int
+}
+
+class UnitTest {
+  +id: int
+  +name: string
+  +difficulty: int
+  +prompt: text
+  +tests: text
+}
+
+class LLMUser {
+  +id: int
+  +token: string
+  +user_id: int
+  +llm_id: int
+}
+
+' --- Relationships & multiplicities ---
+LLM "1" -- "М" LLMResult 
+LLM "1" -- "М" LLMUser 
+User "1" -- "М" LLMUser
+
+@enduml
