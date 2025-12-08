@@ -1,0 +1,5 @@
+{
+  "name": "LLM Benchmark System",
+  "description": "A system for managing LLMs, running automated coding benchmarks (LeetCode), and visualizing performance results.",
+  "requestFramePermissions": []
+}
