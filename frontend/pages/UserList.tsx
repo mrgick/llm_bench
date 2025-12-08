@@ -26,7 +26,7 @@ export const UserList: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('Вы уверены?')) return;
     try {
       await api.request(`/users/${id}/`, 'DELETE', null, token);
       fetchUsers();
@@ -53,9 +53,9 @@ export const UserList: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Управление пользователями</h1>
         <Button onClick={() => { setEditingUser({}); setIsModalOpen(true); }}>
-          Create User
+          Создать пользователя
         </Button>
       </div>
 
@@ -66,14 +66,14 @@ export const UserList: React.FC = () => {
               <div>
                 <h3 className="text-lg font-medium text-gray-900">{u.username}</h3>
                 <p className="text-sm text-gray-500">{u.email}</p>
-                {u.is_staff && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Admin</span>}
+                {u.is_staff && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Админ</span>}
               </div>
               <div className="flex space-x-2">
                 <Button size="sm" variant="secondary" onClick={() => { setEditingUser(u); setIsModalOpen(true); }}>
-                  Edit
+                  Редактировать
                 </Button>
                 <Button size="sm" variant="danger" onClick={() => handleDelete(u.id)}>
-                  Delete
+                  Удалить
                 </Button>
               </div>
             </li>
@@ -84,11 +84,11 @@ export const UserList: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingUser.id ? 'Edit User' : 'Create User'}
+        title={editingUser.id ? 'Редактировать пользователя' : 'Создать пользователя'}
       >
         <form onSubmit={handleSave} className="space-y-4">
           <Input
-            label="Username"
+            label="Имя пользователя"
             value={editingUser.username || ''}
             onChange={(e) => setEditingUser({ ...editingUser, username: e.target.value })}
             required
@@ -100,9 +100,9 @@ export const UserList: React.FC = () => {
             onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
           />
           <Input
-            label="Password"
+            label="Пароль"
             type="password"
-            placeholder={editingUser.id ? "Leave blank to keep current" : "Required"}
+            placeholder={editingUser.id ? "Оставьте пустым, чтобы не менять" : "Обязательно"}
             value={editingUser.password || ''}
             onChange={(e) => setEditingUser({ ...editingUser, password: e.target.value })}
             required={!editingUser.id}
@@ -116,13 +116,13 @@ export const UserList: React.FC = () => {
               onChange={(e) => setEditingUser({ ...editingUser, is_staff: e.target.checked })}
             />
             <label htmlFor="is_staff" className="ml-2 block text-sm text-gray-900">
-              Is Admin
+              Админ
             </label>
           </div>
           
           <div className="flex justify-end space-x-2 mt-4">
-            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button type="submit">Save</Button>
+            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Отмена</Button>
+            <Button type="submit">Сохранить</Button>
           </div>
         </form>
       </Modal>

@@ -14,14 +14,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   const navItems = [
-    { label: 'Dashboard', path: '/' },
-    { label: 'LLMs', path: '/llms' },
-    { label: 'Profile', path: '/profile' },
+    { label: 'Панель', path: '/' },
+    { label: 'Модели LLM', path: '/llms' },
+    { label: 'Профиль', path: '/profile' },
   ];
 
   if (user?.is_staff) {
-    navItems.push({ label: 'Users', path: '/users' });
-    navItems.push({ label: 'Unit Tests', path: '/tests' });
+    navItems.push({ label: 'Пользователи', path: '/users' });
+    navItems.push({ label: 'Тесты', path: '/tests' });
   }
 
   return (
@@ -31,7 +31,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="flex h-16 justify-between">
             <div className="flex">
               <div className="flex flex-shrink-0 items-center">
-                <span className="text-xl font-bold text-blue-600">LLM Bench</span>
+                <span className="text-xl font-bold text-blue-600">LLM Бенч</span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 {navItems.map((item) => (
@@ -51,10 +51,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </div>
             <div className="flex items-center">
               <span className="text-sm text-gray-500 mr-4">
-                Hello, {user?.username}
+                Привет, {user?.username}
               </span>
               <Button onClick={handleLogout} variant="secondary" size="sm">
-                Log out
+                Выйти
               </Button>
             </div>
           </div>

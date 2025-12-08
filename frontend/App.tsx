@@ -83,7 +83,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 // --- Route Guards ---
 const ProtectedRoute = () => {
   const { token, isLoading } = useAuth();
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Загрузка...</div>;
   if (!token) return <Navigate to="/login" replace />;
   return (
     <Layout>

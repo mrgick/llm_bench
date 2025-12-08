@@ -17,7 +17,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error('Login failed');
+    if (!response.ok) throw new Error('Ошибка входа');
     return response.json();
   },
 

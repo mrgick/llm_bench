@@ -31,7 +31,7 @@ export const LLMList: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this LLM?')) return;
+    if (!confirm('Вы уверены, что хотите удалить эту модель LLM?')) return;
     try {
       await api.request(`/llms/${id}/`, 'DELETE', null, token);
       fetchLLMs();
@@ -57,10 +57,10 @@ export const LLMList: React.FC = () => {
 
   const handleRunTests = async (id: number) => {
     try {
-        await api.request(`/llms/${id}/run_tests/`, 'POST', null, token);
-        alert('Tests started in background.');
+      await api.request(`/llms/${id}/run_tests/`, 'POST', null, token);
+      alert('Тесты запущены в фоновой задаче.');
     } catch (error) {
-        alert('Failed to start tests');
+      alert('Не удалось запустить тесты');
         console.error(error);
     }
   };
@@ -94,17 +94,17 @@ export const LLMList: React.FC = () => {
         setTokenModalOpen(true);
     } catch (error) {
         console.error("Error getting token", error);
-        alert("Could not retrieve token.");
+      alert("Не удалось получить токен.");
     }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">LLM Models</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Модели LLM</h1>
         {user?.is_staff && (
           <Button onClick={() => { setEditingLLM({}); setIsModalOpen(true); }}>
-            Add New LLM
+            Добавить модель
           </Button>
         )}
       </div>
@@ -123,18 +123,18 @@ export const LLMList: React.FC = () => {
                 {user?.is_staff ? (
                   <>
                     <Button size="sm" variant="success" onClick={() => handleRunTests(llm.id)}>
-                      Run Tests
+                      Запустить тесты
                     </Button>
                     <Button size="sm" variant="secondary" onClick={() => { setEditingLLM(llm); setIsModalOpen(true); }}>
-                      Edit
+                      Редактировать
                     </Button>
                     <Button size="sm" variant="danger" onClick={() => handleDelete(llm.id)}>
-                      Delete
+                      Удалить
                     </Button>
                   </>
                 ) : (
                     <Button size="sm" onClick={() => handleGetToken(llm)}>
-                        Get Token
+                        Получить токен
                     </Button>
                 )}
               </div>
@@ -147,42 +147,42 @@ export const LLMList: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingLLM.id ? 'Edit LLM' : 'Add LLM'}
+        title={editingLLM.id ? 'Редактировать модель' : 'Добавить модель LLM'}
       >
         <form onSubmit={handleSave} className="space-y-4">
           <Input
-            label="Name"
+            label="Название"
             value={editingLLM.name || ''}
             onChange={(e) => setEditingLLM({ ...editingLLM, name: e.target.value })}
             required
           />
           <Input
-            label="OpenAI Compatible Link"
+            label="Ссылка (OpenAI-совместимый)"
             value={editingLLM.openai_link || ''}
             onChange={(e) => setEditingLLM({ ...editingLLM, openai_link: e.target.value })}
             type="url"
           />
           <Input
-            label="API Token (System Access)"
+            label="API-токен"
             value={editingLLM.api_token || ''}
             onChange={(e) => setEditingLLM({ ...editingLLM, api_token: e.target.value })}
             type="password"
           />
           <div className="flex justify-end space-x-2 mt-4">
-            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button type="submit">Save</Button>
+            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Отмена</Button>
+            <Button type="submit">Сохранить</Button>
           </div>
         </form>
       </Modal>
 
       {/* User Token Display Modal */}
       <Modal
-         isOpen={tokenModalOpen}
-         onClose={() => setTokenModalOpen(false)}
-         title={`Connect to ${selectedLLMName}`}
+        isOpen={tokenModalOpen}
+        onClose={() => setTokenModalOpen(false)}
+        title={`Подключение к ${selectedLLMName}`}
       >
          <div className="space-y-4">
-            <p className="text-sm text-gray-600">Use the following credentials to connect via an OpenAI-compatible client:</p>
+          <p className="text-sm text-gray-600">Используйте следующие данные для подключения через OpenAI-совместимый клиент:</p>
             
             <div>
                 <label className="block text-xs font-medium text-gray-500 uppercase">Endpoint</label>
@@ -192,17 +192,17 @@ export const LLMList: React.FC = () => {
             </div>
 
             <div>
-                <label className="block text-xs font-medium text-gray-500 uppercase">Your API Key</label>
+                <label className="block text-xs font-medium text-gray-500 uppercase">Ваш API-ключ</label>
                 <div className="mt-1 flex rounded-md shadow-sm">
                     <input readOnly value={generatedToken} className="flex-1 block w-full rounded-md border-gray-300 sm:text-sm bg-gray-50 border p-2 font-mono"/>
                     <Button variant="secondary" className="ml-2" onClick={() => navigator.clipboard.writeText(generatedToken)}>
-                        Copy
+                        Копировать
                     </Button>
                 </div>
             </div>
             
              <div className="flex justify-end mt-4">
-                <Button onClick={() => setTokenModalOpen(false)}>Close</Button>
+                <Button onClick={() => setTokenModalOpen(false)}>Закрыть</Button>
             </div>
          </div>
       </Modal>

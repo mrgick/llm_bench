@@ -26,7 +26,7 @@ export const UnitTestList: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('Вы уверены?')) return;
     try {
       await api.request(`/unit-tests/${id}/`, 'DELETE', null, token);
       fetchTests();
@@ -53,9 +53,9 @@ export const UnitTestList: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Unit Tests</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Тесты</h1>
         <Button onClick={() => { setEditingTest({ difficulty: 'easy' }); setIsModalOpen(true); }}>
-          Add Test
+          Добавить тест
         </Button>
       </div>
 
@@ -70,17 +70,17 @@ export const UnitTestList: React.FC = () => {
                         ${t.difficulty === 'easy' ? 'bg-green-100 text-green-800' : 
                           t.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' : 
                           t.difficulty === 'hard' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}`}>
-                        {t.difficulty}
+                        {t.difficulty === 'easy' ? 'Лёгкий' : t.difficulty === 'medium' ? 'Средний' : t.difficulty === 'hard' ? 'Сложный' : 'Все'}
                     </span>
                 </div>
                 <p className="text-sm text-gray-500 truncate">{t.prompt}</p>
               </div>
               <div className="flex space-x-2">
                 <Button size="sm" variant="secondary" onClick={() => { setEditingTest(t); setIsModalOpen(true); }}>
-                  Edit
+                  Редактировать
                 </Button>
                 <Button size="sm" variant="danger" onClick={() => handleDelete(t.id)}>
-                  Delete
+                  Удалить
                 </Button>
               </div>
             </li>
@@ -91,35 +91,35 @@ export const UnitTestList: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingTest.id ? 'Edit Test' : 'Add Test'}
+        title={editingTest.id ? 'Редактировать тест' : 'Добавить тест'}
       >
         <form onSubmit={handleSave} className="space-y-4">
           <Input
-            label="Name"
+            label="Название"
             value={editingTest.name || ''}
             onChange={(e) => setEditingTest({ ...editingTest, name: e.target.value })}
             required
           />
           <Select
-            label="Difficulty"
+            label="Сложность"
             value={editingTest.difficulty || 'easy'}
             onChange={(e) => setEditingTest({ ...editingTest, difficulty: e.target.value as any })}
             options={[
-                { value: 'easy', label: 'Easy' },
-                { value: 'medium', label: 'Medium' },
-                { value: 'hard', label: 'Hard' },
-                { value: 'all', label: 'All' },
+                { value: 'easy', label: 'Лёгкая' },
+                { value: 'medium', label: 'Средняя' },
+                { value: 'hard', label: 'Сложная' },
+                { value: 'all', label: 'Все' },
             ]}
           />
           <Textarea
-            label="Prompt"
+            label="Пояснение (prompt)"
             rows={3}
             value={editingTest.prompt || ''}
             onChange={(e) => setEditingTest({ ...editingTest, prompt: e.target.value })}
             required
           />
           <Textarea
-            label="Tests (Python Code)"
+            label="Тесты (Python код)"
             rows={5}
             value={editingTest.tests || ''}
             onChange={(e) => setEditingTest({ ...editingTest, tests: e.target.value })}
@@ -128,8 +128,8 @@ export const UnitTestList: React.FC = () => {
           />
           
           <div className="flex justify-end space-x-2 mt-4">
-            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button type="submit">Save</Button>
+            <Button type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Отмена</Button>
+            <Button type="submit">Сохранить</Button>
           </div>
         </form>
       </Modal>

@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
       await login(username, password);
       navigate('/');
     } catch (err) {
-      setError('Invalid credentials');
+      setError('Неверное имя пользователя или пароль');
     }
   };
 
@@ -24,7 +24,7 @@ export const Login: React.FC = () => {
     <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to LLM Benchmark
+          Вход в систему LLM Бенч
         </h2>
       </div>
 
@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
             {error && <div className="text-red-600 text-sm">{error}</div>}
             
             <Input
-              label="Username"
+              label="Имя пользователя"
               type="text"
               required
               value={username}
@@ -42,7 +42,7 @@ export const Login: React.FC = () => {
             />
 
             <Input
-              label="Password"
+              label="Пароль"
               type="password"
               required
               value={password}
@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
 
             <div>
               <Button type="submit" className="w-full">
-                Sign in
+                Войти
               </Button>
             </div>
           </form>

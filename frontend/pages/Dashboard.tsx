@@ -7,6 +7,7 @@ import { Select } from '../components/ui';
 
 export const Dashboard: React.FC = () => {
   const { token } = useAuth();
+  const DIFFICULTY_LABELS: Record<string, string> = { all: 'Все', easy: 'Лёгкая', medium: 'Средняя', hard: 'Сложная' };
   const [results, setResults] = useState<LLMResult[]>([]);
   const [llms, setLlms] = useState<LLM[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,20 +55,20 @@ export const Dashboard: React.FC = () => {
 
   }, [results, llms, difficultyFilter]);
 
-  if (loading) return <div>Loading statistics...</div>;
+  if (loading) return <div>Загрузка статистики...</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Benchmark Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Панель бенчмарков</h1>
         <div className="w-48">
           <Select
-            label="Difficulty"
+            label="Сложность"
             options={[
-              { value: 'all', label: 'All' },
-              { value: 'easy', label: 'Easy' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'hard', label: 'Hard' },
+              { value: 'all', label: 'Все' },
+              { value: 'easy', label: 'Лёгкая' },
+              { value: 'medium', label: 'Средняя' },
+              { value: 'hard', label: 'Сложняя' },
             ]}
             value={difficultyFilter}
             onChange={(e) => setDifficultyFilter(e.target.value)}
@@ -76,7 +77,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow h-[500px]">
-        <h3 className="text-lg font-medium mb-4">LLM Performance (Pass@1)</h3>
+        <h3 className="text-lg font-medium mb-6">Производительность моделей (Pass@1)</h3>
         {chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -88,11 +89,11 @@ export const Dashboard: React.FC = () => {
               <YAxis
                 domain={[0, 100]}
                 tickFormatter={(v) => `${v}%`}
-                label={{ value: 'Success Rate (%)', angle: -90, position: 'left', dx: -10 }}
+                label={{ value: 'Процент успеха (%)', angle: -90, position: 'left', dx: -10 }}
               />
               <Tooltip />
               <Legend verticalAlign="top" />
-              <Bar dataKey="score" name="Pass Rate %">
+              <Bar dataKey="score" name="Процент прохождения">
                 {chartData.map((entry, index) => {
                   const colors = ['#4F46E5', '#EF4444', '#10B981', '#F59E0B', '#06B6D4', '#8B5CF6'];
                   return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
@@ -102,18 +103,18 @@ export const Dashboard: React.FC = () => {
           </ResponsiveContainer>
         ) : (
           <div className="flex h-full items-center justify-center text-gray-500">
-            No data available
+            Данные отсутствуют
           </div>
         )}
       </div>
 
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Recent Runs</h3>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">Последние прогоны</h3>
         </div>
         <ul className="divide-y divide-gray-200">
           {results.slice(0, 5).map((result) => {
-            const llmName = llms.find(l => l.id === result.llm)?.name || 'Unknown LLM';
+            const llmName = llms.find(l => l.id === result.llm)?.name || 'Неизвестная модель';
             return (
               <li key={result.id} className="px-4 py-4 sm:px-6">
                 <div className="flex items-center justify-between">
@@ -127,7 +128,7 @@ export const Dashboard: React.FC = () => {
                 <div className="mt-2 sm:flex sm:justify-between">
                   <div className="sm:flex">
                     <p className="flex items-center text-sm text-gray-500">
-                      Difficulty: {result.difficulty}
+                      Сложность: {DIFFICULTY_LABELS[result.difficulty] || result.difficulty}
                     </p>
                   </div>
                 </div>
