@@ -1,0 +1,68 @@
+@startuml
+left to right direction
+skinparam backgroundColor #f8fafc
+skinparam shadowing false
+skinparam roundCorner 8
+' skinparam ArrowColor #3B82F6
+skinparam ArrowThickness 1
+skinparam rectangleBorderThickness 2
+skinparam usecaseBorderThickness 1
+
+actor "Гость" as Guest #3B82F6
+actor "Пользователь" as User #3B82F6
+actor "Администратор" as Admin #3B82F6
+
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleFontColor #3B82F6
+skinparam rectangleBorderColor #3B82F6
+
+rectangle "LLM Бенч" as SYS #ffffff {
+  usecase UC_Login as "Вход" #E0E7FF
+  usecase UC_GetLLMToken as "Получить токен для LLM" #e2ffec
+  usecase UC_ViewProfile as "Просмотреть профиль" #E0E7FF
+  usecase UC_ViewProfileEdit as "Редактировать профиль" #e2ffec
+  usecase UC_ViewDashboard as "Просмотреть результаты бенчмарка" #E0E7FF
+  usecase UC_ViewUserLLMs as "Просмотреть доступные LLM" #E0E7FF
+  usecase UC_ViewLLMs as "Просмотреть список LLM" #E0E7FF
+  usecase UC_ViewLLMsEdit as "Редактировать LLM" #e2ffec
+  usecase UC_ViewLLMsCreate as "Добавить LLM" #e2ffec
+  usecase UC_ViewLLMsDelete as "Удалить LLM" #e2ffec
+  usecase UC_RunTests as "Запустить прогон тестов LLM" #e2ffec
+  usecase UC_ManageUsers as "Посмотреть список пользователей" #E0E7FF
+  usecase UC_ManageUsersCreate as "Создать пользователя" #e2ffec
+  usecase UC_ManageUsersEdit as "Редактировать пользователя" #e2ffec
+  usecase UC_ManageUsersDelete as "Удалить пользователя" #e2ffec
+  usecase UC_ManageUnitTests as "Посмотреть список unit-тесты" #E0E7FF
+  usecase UC_ManageUnitTestsCreate as "Создать unit-тесты" #e2ffec
+  usecase UC_ManageUnitTestsEdit as "Редактировать unit-тесты" #e2ffec
+  usecase UC_ManageUnitTestsDelete as "Удалить unit-тесты" #e2ffec
+}
+
+Guest --> UC_Login
+
+User --> UC_ViewUserLLMs
+User --> UC_ViewDashboard
+User --> UC_ViewProfile
+UC_ViewUserLLMs ..> UC_GetLLMToken : <<include>>
+UC_ViewProfile ..> UC_ViewProfileEdit : <<include>>
+
+Admin --> UC_ViewDashboard
+Admin --> UC_ViewLLMs
+Admin --> UC_ViewProfile
+Admin --> UC_ManageUsers
+Admin --> UC_ManageUnitTests
+
+UC_ManageUnitTests ..> UC_ManageUnitTestsCreate : <<include>>
+UC_ManageUnitTests ..> UC_ManageUnitTestsEdit : <<include>>
+UC_ManageUnitTests ..> UC_ManageUnitTestsDelete : <<include>>
+
+UC_ManageUsers ..> UC_ManageUsersCreate : <<include>>
+UC_ManageUsers ..> UC_ManageUsersEdit : <<include>>
+UC_ManageUsers ..> UC_ManageUsersDelete : <<include>>
+
+UC_ViewLLMs ..> UC_RunTests : <<include>>
+UC_ViewLLMs ..> UC_ViewLLMsEdit : <<include>>
+UC_ViewLLMs ..> UC_ViewLLMsCreate : <<include>>
+UC_ViewLLMs ..> UC_ViewLLMsDelete : <<include>>
+
+@enduml
