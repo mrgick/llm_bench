@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -81,6 +82,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+# Simple JWT token settings
+SIMPLE_JWT = {
+    # Increase access token lifetime to 2 hours
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    # Increase refresh token lifetime to 7 days
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    # keep defaults for other settings unless you want to change them
 }
 
 # drf-yasg / Swagger settings: enable JWT in the Authorize dialog
