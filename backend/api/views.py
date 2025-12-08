@@ -50,10 +50,9 @@ class LLMViewSet(viewsets.ModelViewSet):
         """
         llm = self.get_object()
         # For now create a placeholder result with 0.0
-        # TODO: ...
-        result = LLMResult.objects.create(llm=llm, result=0.0, difficulty="all")
-        serializer = LLMResultSerializer(result)
-        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        # result = LLMResult.objects.create(llm=llm, result=0.0, difficulty="all")
+        # serializer = LLMResultSerializer(result)
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class LLMResultViewSet(viewsets.ReadOnlyModelViewSet):
