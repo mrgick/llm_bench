@@ -1,0 +1,77 @@
+@startuml
+autonumber
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 200
+
+actor "Администратор" as User
+participant "Клиент\n(Frontend)" as Client
+participant "Сервер\n(Backend)" as Server
+queue "Celery\n(Worker)" as Celery
+database "База данных" as DB
+participant "LLM\n(Внешнаяя\nсистема)" as LLM
+
+== 1. Инициализация запуска ==
+
+User -> Client: Нажать "Запустить прогон тестов"
+activate Client
+
+Client -> Server: POST /api/llm/{id}/run-tests
+activate Server
+
+Server -> Celery: Создать асинхронную задачу
+activate Celery
+
+Server --> Client: 202 Accepted
+deactivate Server
+
+Client --> User: Уведомление: "Тесты запущены в фоне"
+deactivate Client
+
+
+== 2. Выполнение тестов (Celery) ==
+
+Celery -> DB: Запрос тестов (ORDER BY difficulty ASC)
+activate DB
+DB --> Celery: Список тестов\n[Easy, Medium, Hard]
+deactivate DB
+
+loop Для каждого теста (по порядку)
+    Celery -> LLM: HTTP Запрос (Prompt)
+    activate LLM
+    LLM --> Celery: Ответ модели (Код)
+    deactivate LLM
+    
+    Celery -> Celery: Проверка (unit-тесты)
+end
+
+== 3. Сохранение результатов ==
+
+Celery -> Celery: Вычисление оценок
+Celery -> DB: Создание батча LLMResult
+activate DB
+DB --> Celery: Подтверждение сохранения
+deactivate DB
+deactivate Celery
+
+== 4. Отображение результатов ==
+
+
+User -> Client: Открыть страницу результатов
+activate Client
+
+Client -> Server: GET /api/llm-result/
+activate Server
+
+Server -> DB: Запрос готовых результатов
+activate DB
+DB --> Server: Список LLM с LLMResult
+deactivate DB
+
+Server --> Client: JSON (Данные для графика)
+deactivate Server
+
+Client --> User: Отображение диаграммы результатов
+
+deactivate Client
+
+@enduml
