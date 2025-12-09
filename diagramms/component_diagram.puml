@@ -55,7 +55,7 @@ package "Серверная часть (DRF)" {
 
 
 ' --- 4. Хранилище данных ---
-database "SQLite" as DB
+database "PostgreSQL" as DB
 database "Redis" as Redis
 
 ' --- 5. Внешние системы ---

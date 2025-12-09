@@ -1,0 +1,74 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+
+' Стилизация как на примере (синие границы, белый фон)
+skinparam node {
+    BackgroundColor #FFFFFF
+    BorderColor #3B82F6
+    FontColor Black
+    FontStyle bold
+    BorderThickness 1.5
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #6B7280
+    FontColor Black
+    Style rectangle
+}
+
+skinparam database {
+    BackgroundColor #3B82F6
+    BorderColor #1E40AF
+    FontColor White
+}
+
+skinparam cloud {
+    BackgroundColor #FFFFFF
+    BorderColor #3B82F6
+}
+
+skinparam arrow {
+    Color #3B82F6
+    Thickness 2
+    FontColor #4B5563
+}
+
+' --- 1. Клиент ---
+node "Клиентское устройство" as ClientNode {
+    component "Веб-браузер\n(React SPA)" as Browser
+}
+
+' --- 2. Сервер ---
+node "Сервер приложения\n(Linux, Docker)" as ServerNode {
+    
+    component "Backend Rest API\n(Django REST Framework)" as Backend
+    
+    component "Celery" as Celery
+    
+    database "PostgreSQL" as SQLite
+    database "Redis" as Redis
+}
+
+' --- 3. Внешние системы ---
+cloud "Внешние API LLM" as ExternalCloud {
+    component "OpenAI / Claude \n DeepSeek / LocalAI" as LLM_APIs
+}
+
+' --- Связи ---
+
+' Клиент -> Сервер
+Browser -down-> Backend : HTTP
+
+' Внутри сервера
+Backend -down-> SQLite : SQL
+Backend -right-> Redis : RESP
+Backend -down-> Celery : Task Queue
+
+' Сервер -> Внешний мир
+Backend -right-> LLM_APIs : HTTPS (Proxy)
+
+@enduml
