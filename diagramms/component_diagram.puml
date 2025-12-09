@@ -1,0 +1,99 @@
+@startuml
+!theme plain
+skinparam componentStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam component {
+    BackgroundColor #3B82F6
+    BorderColor #2563EB
+    FontColor White
+    FontSize 13
+    FontStyle bold
+}
+skinparam package {
+    BackgroundColor #F3F4F6
+    BorderColor #9CA3AF
+    FontColor #1F2937
+}
+skinparam database {
+    BackgroundColor #FBBF24
+    BorderColor #D97706
+    FontColor Black
+}
+skinparam queue {
+    BackgroundColor #EF4444
+    BorderColor #B91C1C
+    FontColor White
+}
+skinparam cloud {
+    BackgroundColor #E5E7EB
+    BorderColor #9CA3AF
+    FontColor Black
+}
+skinparam arrowColor #2563EB
+
+' --- 1. Клиентская часть ---
+package "Клиентская часть (React)" {
+    component "Пользовательская часть" as Client
+    component "Администраторская часть" as Admin
+    component "Авторизация" as Login
+    component "Контроллер (App)" as ReactApp
+}
+
+' --- 2. Серверная часть ---
+package "Серверная часть (DRF)" {
+    component "Контроллер (REST API)" as Controller
+    component "Сервис\nавторизации" as AuthService
+    component "Сервис\nпользователей" as UserService
+    component "Сервис\nunit-тестов" as TestService
+    component "Сервис LLM" as LLMService
+    component "Сервис proxy LLM" as LLMSProxyervice
+    rectangle "Celery" as CeleryService {
+        component "Сервис бенчмарка LLM" as LLMBenchService
+    }
+}
+
+
+
+' --- 4. Хранилище данных ---
+database "SQLite" as DB
+database "Redis" as Redis
+
+' --- 5. Внешние системы ---
+cloud "Внешние системы LLM" as ExternalLLMs {
+    [OpenAI]
+    [DeepSeek]
+    [Claude]
+    [LocalAI (Qwen2.5)]
+}
+
+' --- Связи ---
+
+' Frontend -> Controller
+ReactApp -down-> Client
+ReactApp -down-> Admin
+ReactApp -down-> Login
+ReactApp -down-> Controller : HTTP
+
+' Controller -> Services (Routing)
+Controller -down-> AuthService
+Controller -down-> UserService
+Controller -down-> TestService
+Controller -down-> LLMService
+
+' Services -> Database
+AuthService -[hidden]- UserService
+AuthService ..> DB : SQL
+UserService ..> DB : SQL
+TestService ..> DB : SQL
+LLMService ..> DB : SQL
+LLMSProxyervice ..> DB : SQL
+LLMBenchService ..> DB : SQL
+
+LLMService -down-> LLMSProxyervice
+LLMService -down-> LLMBenchService
+
+LLMSProxyervice ..> ExternalLLMs : HTTP
+LLMBenchService ..> Redis : RESP
+LLMBenchService ..> ExternalLLMs : HTTP
+
+@enduml
