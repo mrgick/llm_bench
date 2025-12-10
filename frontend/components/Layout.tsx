@@ -14,7 +14,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   const navItems = [
-    { label: 'Панель', path: '/' },
+    { label: 'Главная', path: '/' },
     { label: 'Модели LLM', path: '/llms' },
     { label: 'Профиль', path: '/profile' },
   ];

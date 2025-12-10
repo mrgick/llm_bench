@@ -192,9 +192,9 @@ export const LLMList: React.FC = () => {
             </div>
 
             <div>
-                <label className="block text-xs font-medium text-gray-500 uppercase">Ваш API-ключ</label>
+                <label className="block text-xs font-medium text-gray-500 uppercase">Ваш API-токен</label>
                 <div className="mt-1 flex rounded-md shadow-sm">
-                    <input readOnly value={generatedToken} className="flex-1 block w-full rounded-md border-gray-300 sm:text-sm bg-gray-50 border p-2 font-mono"/>
+                    <input readOnly value={generatedToken} className="flex-1 block w-full rounded-md border-gray-300 sm:text-sm bg-gray-50 border p-2 font-mono" type="password"/>
                     <Button variant="secondary" className="ml-2" onClick={() => navigator.clipboard.writeText(generatedToken)}>
                         Копировать
                     </Button>
