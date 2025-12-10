@@ -69,6 +69,6 @@ Backend -right-> Redis : RESP
 Backend -down-> Celery : Task Queue
 
 ' Сервер -> Внешний мир
-Backend -right-> LLM_APIs : HTTPS (Proxy)
+Backend -right-> LLM_APIs : HTTP
 
 @enduml
