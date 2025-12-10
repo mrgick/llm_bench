@@ -1,0 +1,28 @@
+@startuml
+autonumber
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 200
+
+actor "Пользователь" as User
+participant "Сервер\n(Backend)" as Server
+database "База данных" as DB
+participant "LLM\n(Внешнаяя\nсистема)" as LLM
+
+User -> Server: Отправка HTTP запроса вида openapi (LLM, токен, промпт)
+
+activate Server
+
+Server -> DB: Проверка токена пользователя
+activate DB
+DB --> Server: Подтверждение валидности токена
+deactivate DB
+
+activate LLM
+Server -> LLM: Отправка запроса к LLM с токеном
+LLM --> Server: Ответ от LLM
+deactivate LLM
+
+Server --> User: Ответ с данными от LLM вида openapi
+deactivate Server
+
+@enduml

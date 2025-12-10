@@ -1,0 +1,27 @@
+@startuml
+autonumber
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 200
+
+actor "Пользователь" as User
+participant "Клиент\n(Frontend)" as Client
+participant "Сервер\n(Backend)" as Server
+database "База данных" as DB
+
+User -> Client: Кнопка "Получить токен" для LLM
+activate Client
+
+Client -> Server: GET /api/llm-users/?user_id={user_id}&&llm_id={llm_id}
+activate Server
+
+Server -> DB: Получение/Создание токена для пользователя
+activate DB
+DB --> Server: LLM токен пользователя
+deactivate DB
+
+Server --> Client: 200 OK c json
+deactivate Server
+
+Client --> User: Показать модальное окно с токеном и данными модели
+
+@enduml
