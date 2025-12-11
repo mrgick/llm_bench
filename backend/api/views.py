@@ -45,13 +45,8 @@ class LLMViewSet(viewsets.ModelViewSet):
         serializer_class=None,
     )
     def run_tests(self, request, pk=None):
-        """Placeholder endpoint: triggers a run of tests for the LLM.
-        Currently creates a placeholder LLMResult and returns 202.
-        """
         llm = self.get_object()
-        # For now create a placeholder result with 0.0
-        # result = LLMResult.objects.create(llm=llm, result=0.0, difficulty="all")
-        # serializer = LLMResultSerializer(result)
+        # run_celery_task(llm)
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
@@ -112,7 +107,6 @@ class IsAdminOrSelf(permissions.BasePermission):
         return obj == request.user
 
 
-# Public token endpoints (ensure AllowAny regardless of global settings)
 class PublicTokenObtainPairView(SimpleJWTTokenObtainPairView):
     permission_classes = [drf_permissions.AllowAny]
 
